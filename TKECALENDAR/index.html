@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="month">
+    <div class="logo">
+      <img src="Large.png" alt="logo">
+    </div>
+    <div class="prev">&#10094;</div>
+    <div class="next">&#10095;</div>
+    <ul>
+      <li class="month-name">
+        August<br>
+        <span style="font-size:18px">2023</span>
+      </li>
+      <li class="year"></li>
+    </ul>
+  </div>
+
+  <ul class="weekdays">
+    <li>Mo</li>
+    <li>Tu</li>
+    <li>We</li>
+    <li>Th</li>
+    <li>Fr</li>
+    <li>Sa</li>
+    <li>Su</li>
+  </ul>
+
+  <ul class="days">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+    <li>10</li>
+    <li>11</li>
+    <li>12</li>
+    <li>13</li>
+    <li>14</li>
+    <li>15</li>
+    <li>16</li>
+    <li>17</li>
+    <li>18</li>
+    <li>19</li>
+    <li>20</li>
+    <li>21</li>
+    <li>22</li>
+    <li>23</li>
+    <li>24</li>
+    <li>25</li>
+    <li>26</li>
+    <li>27</li>
+    <li>28</li>
+    <li>29</li>
+    <li>30</li>
+    <li>31</li>
+  </ul>
+  <script src="script.js"></script>
+  <script>
+const prevBtn = document.querySelector('.prev');
+const nextBtn = document.querySelector('.next');
+let currentDate = new Date();
+let currentMonth = currentDate.getMonth();
+let currentYear = currentDate.getFullYear();
+
+prevBtn.addEventListener('click', goToPrevMonth);
+nextBtn.addEventListener('click', goToNextMonth);
+
+function goToPrevMonth() {
+  currentMonth--;
+  if (currentMonth < 0) {
+    currentYear--;
+    currentMonth = 11;
+  }
+  const newDate = new Date(currentYear, currentMonth);
+  updateCalendar(newDate);
+}
+
+function goToNextMonth() {
+  currentMonth++;
+  if (currentMonth > 11) {
+    currentYear++;
+    currentMonth = 0;
+  }
+  const newDate = new Date(currentYear, currentMonth);
+  updateCalendar(newDate);
+}
+
+function updateCalendar(currentDate) {
+  // Update month name
+  const monthName = document.querySelector('.month-name');
+  monthName.textContent = currentDate.toLocaleString('default', { month: 'long' });
+
+  // Update year
+  const year = document.querySelector('.year');
+  year.textContent = currentDate.getFullYear();
+
+  // Update days
+  const days = document.querySelector('.days');
+  days.innerHTML = '';
+
+  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+  // Add empty cells for days before the 1st of the month
+  for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
+    const emptyCell = document.createElement('li');
+    days.appendChild(emptyCell);
+  }
+
+  // Add days of the month
+  for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+    const dayCell = document.createElement('li');
+    dayCell.textContent = i;
+    if (currentDate.getDate() === i) {
+      dayCell.classList.add('current');
+    }
+    days.appendChild(dayCell);
+  }
+}
+updateCalendar(currentDate);
+</script>
